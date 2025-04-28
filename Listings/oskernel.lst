@@ -1,0 +1,115 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             |.TEXT|,CODE,READONLY,ALIGN = 2
+    2 00000000                 PRESERVE8
+    3 00000000                 THUMB
+    4 00000000                 EXTERN           currentPtr
+    5 00000000                 IMPORT           osSchedulerPeriodicRR
+    6 00000000                 EXPORT           osSchedulerLaunch
+    7 00000000                 EXPORT           PendSV_Handler
+    8 00000000         
+    9 00000000         osSchedulerLaunch
+   10 00000000 4810            LDR              R0, =currentPtr
+   11 00000002 6802            LDR              R2, [R0]
+   12 00000004         
+   13 00000004 F8D2 D000       LDR              SP, [R2]
+   14 00000008 E8BD 0FF0       POP              {R4 - R11}
+   15 0000000C BC0F            POP              {R0 - R3}
+   16 0000000E F85D CB04       POP              {R12}
+   17 00000012 B001            ADD              SP, SP, #4
+   18 00000014 F85D EB04       POP              {LR}
+   19 00000018 B001            ADD              SP, SP, #4
+   20 0000001A         
+   21 0000001A B662            CPSIE            I
+   22 0000001C 4770            BX               LR
+   23 0000001E         
+   24 0000001E         PendSV_Handler
+   25 0000001E B672            CPSID            I
+   26 00000020 E92D 0FF0       PUSH             {R4-R11}
+   27 00000024 4807            LDR              R0, =currentPtr
+   28 00000026 6801            LDR              R1, [R0]
+   29 00000028         
+   30 00000028 F8C1 D000       STR              SP, [R1]
+   31 0000002C         ;LDR R1, [R1, #4]
+   32 0000002C         ;STR R1, [R0]
+   33 0000002C         
+   34 0000002C B501            PUSH             {R0, LR}
+   35 0000002E F7FF FFFE       BL               osSchedulerPeriodicRR
+   36 00000032 E8BD 4001       POP              {R0, LR}
+   37 00000036 6801            LDR              R1, [R0]
+   38 00000038         
+   39 00000038 F8D1 D000       LDR              SP, [R1]
+   40 0000003C E8BD 0FF0       POP              {R4-R11}
+   41 00000040 B662            CPSIE            I
+   42 00000042 4770            BX               LR
+   43 00000044         
+   44 00000044                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\objects\oskernel_1.d -o.\objects\oskernel_1.o -I.\RTE\Device\STM
+32F103C8 -I.\RTE\_Target_1 -I"D:\Keil Core\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Inclu
+de" -I"D:\Keil Core\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include" -I"D:\Kei
+l Core\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\StdPeriph_Driver\inc" --predefi
+ne="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 525" --predefine="_RTE_ 
+SETA 1" --predefine="STM32F10X_MD SETA 1" --list=.\listings\oskernel.lst osKern
+el\osKernel.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.TEXT 00000000
+
+Symbol: .TEXT
+   Definitions
+      At line 1 in file osKernel\osKernel.s
+   Uses
+      None
+Comment: .TEXT unused
+PendSV_Handler 0000001E
+
+Symbol: PendSV_Handler
+   Definitions
+      At line 24 in file osKernel\osKernel.s
+   Uses
+      At line 7 in file osKernel\osKernel.s
+Comment: PendSV_Handler used once
+osSchedulerLaunch 00000000
+
+Symbol: osSchedulerLaunch
+   Definitions
+      At line 9 in file osKernel\osKernel.s
+   Uses
+      At line 6 in file osKernel\osKernel.s
+Comment: osSchedulerLaunch used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+currentPtr 00000000
+
+Symbol: currentPtr
+   Definitions
+      At line 4 in file osKernel\osKernel.s
+   Uses
+      At line 10 in file osKernel\osKernel.s
+      At line 27 in file osKernel\osKernel.s
+
+osSchedulerPeriodicRR 00000000
+
+Symbol: osSchedulerPeriodicRR
+   Definitions
+      At line 5 in file osKernel\osKernel.s
+   Uses
+      At line 35 in file osKernel\osKernel.s
+Comment: osSchedulerPeriodicRR used once
+2 symbols
+341 symbols in table
