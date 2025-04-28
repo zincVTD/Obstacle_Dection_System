@@ -1,0 +1,16 @@
+# ninja log v6
+64	312	7663204478725530	DATN_autogen/timestamp	1059559e1b8fb429
+313	4069	7663204481222597	CMakeFiles/DATN.dir/mainwindow.cpp.obj	de7ae8a98c28b733
+64	312	7663204478725530	DATN_autogen/mocs_compilation.cpp	1059559e1b8fb429
+23	808	7660618447604582	build.ninja	74a464993bc9642f
+64	312	7663204478725530	D:/DATN/DATN/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/DATN_autogen/timestamp	1059559e1b8fb429
+64	312	7663204478725530	D:/DATN/DATN/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/DATN_autogen/mocs_compilation.cpp	1059559e1b8fb429
+1248	6883	7661477188962182	CMakeFiles/DATN.dir/DATN_autogen/mocs_compilation.cpp.obj	fef6f4eb1abce7ab
+1290	6725	7661477189385948	CMakeFiles/DATN.dir/main.cpp.obj	536449876aee94b7
+4069	5029	7663204518781939	DATN.exe	a1d72d19f684e342
+16	316	7665844422599269	DATN_autogen/timestamp	1059559e1b8fb429
+16	316	7665844422599269	DATN_autogen/mocs_compilation.cpp	1059559e1b8fb429
+16	316	7665844422599269	D:/DATN/DATN/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/DATN_autogen/timestamp	1059559e1b8fb429
+16	316	7665844422599269	D:/DATN/DATN/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/DATN_autogen/mocs_compilation.cpp	1059559e1b8fb429
+317	3739	7665844425616847	CMakeFiles/DATN.dir/mainwindow.cpp.obj	de7ae8a98c28b733
+3739	4705	7665844459832428	DATN.exe	a1d72d19f684e342
