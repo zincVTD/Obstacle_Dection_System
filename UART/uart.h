@@ -3,6 +3,7 @@
 
 #include "stm32f10x_usart.h"            // Keil::Device:StdPeriph Drivers:USART
 
+// USART1 configurations
 #define UART_PORT         USART1
 #define UART_GPIO_PORT    GPIOA
 #define UART_TX_PIN       GPIO_Pin_9

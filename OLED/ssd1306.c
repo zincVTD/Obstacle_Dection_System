@@ -127,7 +127,7 @@ static uint8_t I2C_WaitForEvent(uint32_t event) {
 	uint32_t timeout = I2C_TIMEOUT;
 	while (!I2C_CheckEvent(SSD1306_I2C, event)) {
 		if (--timeout == 0) {
-			I2C_ResetBus();  // ?? Reset n?u timeout
+			I2C_ResetBus();  // Reset if timeout
 			return 0;
 		}
 		osThreadYield();
@@ -140,7 +140,7 @@ static void I2C_WriteByte(uint8_t control, uint8_t data) {
 
 	while (I2C_GetFlagStatus(SSD1306_I2C, I2C_FLAG_BUSY)) {
 		if (--timeout == 0) {
-			I2C_ResetBus();  // reset n?u bus k?t
+			I2C_ResetBus();  // reset if timeout
 			return;
 		}
 		osThreadYield();
@@ -169,6 +169,12 @@ static void SSD1306_WriteData(uint8_t data) {
 	I2C_WriteByte(0x40, data);
 }
 
+/**
+  * @brief  Sets the cursor position on the OLED screen.
+  * @param  line: Line number (page address).
+  * @param  column: Column number (pixel address).
+  * @retval None
+  */
 void SSD1306_SetCursor(uint8_t line, uint8_t column) {
 	current_line = line;
 	current_column = column;
@@ -182,6 +188,11 @@ void SSD1306_SetCursor(uint8_t line, uint8_t column) {
 	SSD1306_WriteCmd(SSD1306_MAX_LINE);
 }
 
+/**
+  * @brief  Clears the entire OLED display.
+  * @param  None
+  * @retval None
+  */
 void SSD1306_Clear(void) {
 	SSD1306_SetCursor(0, 0);
 	for (uint16_t i = 0; i < SSD1306_WIDTH * 8; i++) {
@@ -190,6 +201,11 @@ void SSD1306_Clear(void) {
 	SSD1306_SetCursor(0, 0);
 }
 
+/**
+  * @brief  Prints a single character to the OLED display.
+  * @param  c: Character to print.
+  * @retval None
+  */
 void SSD1306_PrintChar(char c) {
 	if (c < 0x20 || c > 0x7F) c = ' ';
 	const uint8_t *bitmap = font5x7[c - 0x20];
@@ -199,15 +215,27 @@ void SSD1306_PrintChar(char c) {
 	SSD1306_WriteData(0x00); // space between characters
 }
 
+/**
+  * @brief  Prints a string vertically starting from a position.
+  * @param  x: X-coordinate position.
+  * @param  y: Y-coordinate position.
+  * @param  text: Pointer to the string to print.
+  * @retval None
+  */
 void ADAS_PrintVertical(uint8_t x, uint8_t y, const char *text) {
 	while (*text) {
 		SSD1306_SetCursor(x, y);
 		SSD1306_PrintChar(*text);
-		y += 8; // m?i ký t? cao ~8 pixel
+		y += 8; // Each character is 8 pixel high
 		text++;
 	}
 }
 
+/**
+  * @brief  Prints a string to the OLED display.
+  * @param  str: Pointer to the string to print.
+  * @retval None
+  */
 void SSD1306_PrintString(char *str) {
 	while (*str) {
 		if (*str == '\n') {
@@ -225,11 +253,21 @@ void SSD1306_PrintString(char *str) {
 	}
 }
 
+/**
+  * @brief  Sets the brightness level of the OLED display.
+  * @param  brightness: Brightness value (0-255).
+  * @retval None
+  */
 void SSD1306_SetBrightness(uint8_t brightness) {
     SSD1306_WriteCmd(0x81);
     SSD1306_WriteCmd(brightness);
 }
 
+/**
+  * @brief  Initializes the SSD1306 OLED display via I2C.
+  * @param  None
+  * @retval None
+  */
 void SSD1306_Init(void) {
     // I2C1 init (PB6: SCL, PB7: SDA)
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
@@ -272,6 +310,13 @@ void SSD1306_Init(void) {
     SSD1306_Clear();
 }
 
+/**
+  * @brief  Draws a single pixel on the OLED screen.
+  * @param  x: X-coordinate.
+  * @param  y: Y-coordinate.
+  * @param  color: 1 to set pixel, 0 to clear pixel.
+  * @retval None
+  */
 void SSD1306_DrawPixel(uint8_t x, uint8_t y, uint8_t color) {
     if (x >= SSD1306_WIDTH || y >= SSD1306_HEIGHT)
         return;
@@ -287,6 +332,14 @@ void SSD1306_DrawPixel(uint8_t x, uint8_t y, uint8_t color) {
         SSD1306_WriteData(0x00);  // xóa pixel
 }
 
+/**
+  * @brief  Draws a line between two points on the OLED screen.
+  * @param  x0: Starting x-coordinate.
+  * @param  y0: Starting y-coordinate.
+  * @param  x1: Ending x-coordinate.
+  * @param  y1: Ending y-coordinate.
+  * @retval None
+  */
 void SSD1306_DrawLine(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
     int dx, dy, sx, sy, err, e2;
 
@@ -328,6 +381,14 @@ void SSD1306_DrawLine(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
     }
 }
 
+/**
+  * @brief  Draws a rectangle on the OLED screen.
+  * @param  x: X-coordinate of top-left corner.
+  * @param  y: Y-coordinate of top-left corner.
+  * @param  w: Width of the rectangle.
+  * @param  h: Height of the rectangle.
+  * @retval None
+  */
 void SSD1306_DrawRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
     SSD1306_DrawLine(x, y, x + w - 1, y);           // top
     SSD1306_DrawLine(x, y + h - 1, x + w - 1, y + h - 1); // bottom
@@ -335,6 +396,12 @@ void SSD1306_DrawRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
     SSD1306_DrawLine(x + w - 1, y, x + w - 1, y + h - 1); // right
 }
 
+/**
+  * @brief  Sets a text label in the ADAS display layout.
+  * @param  index: Index of the label (0-9).
+  * @param  text: Pointer to the label text.
+  * @retval None
+  */
 void ADAS_SetLabel(uint8_t index, const char *text) {
     if (index >= sizeof(adas_labels)/sizeof(adas_labels[0]))
         return;
@@ -347,6 +414,11 @@ void ADAS_SetLabel(uint8_t index, const char *text) {
     adas_labels[index].label[i] = '\0';
 }
 
+/**
+  * @brief  Draws the predefined ADAS layout on the OLED screen.
+  * @param  None
+  * @retval None
+  */
 void drawADASLayout(void) {
     SSD1306_Clear();
 

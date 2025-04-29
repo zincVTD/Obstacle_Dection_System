@@ -1,5 +1,10 @@
 #include "uart.h"
 
+/**
+  * @brief  Initializes the UART peripheral.
+  * @param  None
+  * @retval None
+  */
 void UART_Init(void) {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE);
 
@@ -25,22 +30,43 @@ void UART_Init(void) {
 	USART_Cmd(UART_PORT, ENABLE);
 }
 
+/**
+  * @brief  Sends a single character over UART.
+  * @param  c: Character to be sent.
+  * @retval None
+  */
 void UART_SendChar(char c) {
 	while (USART_GetFlagStatus(UART_PORT, USART_FLAG_TXE) == RESET);
 	USART_SendData(UART_PORT, c);
 }
 
+/**
+  * @brief  Sends a null-terminated string over UART.
+  * @param  str: Pointer to the string to send.
+  * @retval None
+  */
 void UART_SendString(const char *str) {
 	while (*str) {
 			UART_SendChar(*str++);
 	}
 }
 
+/**
+  * @brief  Receives a single character from UART.
+  * @param  None
+  * @retval Received character.
+  */
 char UART_ReceiveChar(void) {
 	while (USART_GetFlagStatus(UART_PORT, USART_FLAG_RXNE) == RESET);
 	return (char)USART_ReceiveData(UART_PORT);
 }
 
+/**
+  * @brief  Receives a string from UART until newline or maximum length.
+  * @param  buffer: Pointer to the buffer to store the received string.
+  * @param  maxLength: Maximum length of the buffer.
+  * @retval None
+  */
 void UART_ReceiveString(char *buffer, uint16_t maxLength) {
 	uint16_t i = 0;
 	char c;
@@ -56,6 +82,12 @@ void UART_ReceiveString(char *buffer, uint16_t maxLength) {
 	buffer[i] = '\0';
 }
 
+/**
+  * @brief  Converts an integer to a string.
+  * @param  num: Integer number to convert.
+  * @param  str: Pointer to the buffer to store the resulting string.
+  * @retval None
+  */
 void UART_ConvertIntToString(uint32_t num, char *str){
 	int i = 0;
 	if (num == 0){

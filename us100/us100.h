@@ -9,6 +9,9 @@
 #define NUM_OF_HCSR04 			10
 #define HCSR04_QUEUE_SIZE 	16
 
+/**
+  * @brief  HC-SR04 states.
+  */
 typedef enum {
 	HCSR04_IDLE,
 	HCSR04_WAIT_FOR_TRIGGER,
@@ -16,6 +19,9 @@ typedef enum {
 	HCSR04_WAIT_FOR_ECHO_LOW,
 } HCSR04_State;
 
+/**
+  * @brief  HC-SR04 definition struct.
+  */
 typedef struct {
 	uint8_t id;
 	uint16_t echoPin;
@@ -28,11 +34,17 @@ typedef struct {
 	uint32_t timeout;
 } HCSR04_TypeDef;
 
+/**
+  * @brief  HC-SR04 data frame in queues.
+  */
 typedef struct {
 	HCSR04_TypeDef *HCSR04_Struct;
 	uint16_t distance_cm;
 } HCSR04_DataFrame;
 
+/**
+  * @brief  HC-SR04 queues.
+  */
 typedef struct {
 	HCSR04_DataFrame buffer[HCSR04_QUEUE_SIZE];
 	uint32_t head;

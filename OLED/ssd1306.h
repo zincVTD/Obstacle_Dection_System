@@ -14,6 +14,9 @@
 
 #define I2C_TIMEOUT					10000
 
+/**
+  * @brief  Struct storing position and data of the label.
+  */
 typedef struct {
     char label[4];
     uint8_t x;

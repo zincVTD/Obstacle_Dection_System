@@ -21,6 +21,9 @@
 //Set value for SysTick (to calculate quanta time)
 extern uint32_t MILLIS_PRESCALER;
 
+/**
+  * @brief  Task Control Block (TCB) initialize struct.
+  */
 struct tcb{
 	uint32_t *stackPtr;
 	struct tcb* nextPtr;
@@ -29,11 +32,17 @@ struct tcb{
 };
 
 typedef struct tcb tcbType;
+// Store the TCBs of all the threads
 extern tcbType tcbs[MAX_NUM_OF_THREAD];
+// Pointer to the current executing thread
 extern tcbType *currentPtr;
+// Store the thread status and value
 extern uint32_t TCB_STACK[MAX_NUM_OF_THREAD][STACK_SIZE];
 extern int current_num_of_thread;
 
+/**
+  * @brief  Periodic task initialize struct.
+  */
 typedef void(*taskT)(void);
 typedef struct{
 	taskT task;
@@ -63,20 +72,5 @@ void periodic_events_exe(void);
 void osPeriodicTask_Init(void(*task)(void), uint32_t freq, uint8_t priority);
 void osThreadsSleep(uint32_t sleeptime);
 void osSchedulerRRSleep(void);
-
-#define QUEUE_SIZE 10
-
-typedef struct {
-    uint32_t buffer[QUEUE_SIZE];
-    uint32_t head;
-    uint32_t tail;
-    uint32_t count;
-    uint32_t mutex;
-} osMessageQueueType;
-
-void osMessageQueue_Init(osMessageQueueType *queue);
-void osMessageQueue_Put(osMessageQueueType *queue, uint32_t message);
-uint32_t osMessageQueue_Get(osMessageQueueType *queue);
-
 
 #endif
