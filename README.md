@@ -16,3 +16,4 @@ Obstacle Detection System là một hệ thống nhúng được phát triển n
 - Cảm biến siêu âm HC-SR04
 - Màn hình OLED 0.96 inch (giao tiếp I2C)
 - Bộ chuyển USB-UART
+**Video demo: https://youtu.be/1uV4va07ZqE**
